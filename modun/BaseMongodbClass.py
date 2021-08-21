@@ -24,13 +24,15 @@ class BaseMongodbClass(object):
         collection = self.connect()
         collection.insert_one(data)
 
-    def add_gridfs_elem(self, filepath: Path, _id=None) -> None:
-        fs = self.connect_with_gridfs()
+    def add_gridfs_elem(self, filepath: Path, _id=None, fs=None) -> None:
+        if fs is None:
+            fs = self.connect_with_gridfs()
         with io.FileIO(str(filepath), 'r') as fileObject:
             fs.put(fileObject, filename=str(filepath.stem), _id=_id)
 
-    def add_array(self, npArray, filename: str, _id=None):
-        fs = self.connect_with_gridfs()
+    def add_array(self, npArray, filename: str, _id=None, fs=None):
+        if fs is None:
+            fs = self.connect_with_gridfs()
         fs.put(Binary(pickle.dumps(npArray, protocol=2), subtype=128), filename=filename, _id=_id)
 
     def connect_with_gridfs(self):
