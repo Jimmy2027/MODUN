@@ -1,4 +1,3 @@
-from pathlib import Path
 import tempfile
 import zipfile
 from pathlib import Path
@@ -6,7 +5,17 @@ from pathlib import Path
 import wget
 
 
-def download_zip_from_url(url: str, dest_folder: Path) -> None:
+def download_from_url(url: str, dest_path: Path) -> None:
+    """Download item from url to dest_path."""
+
+    wget.download(out=dest_path, url=url)
+
+
+def download_zip_from_url(url: str, dest_folder: Path, verbose: bool = False) -> None:
+    """Download from url to tempfolder and then unzip to dest_folder."""
+    if verbose:
+        print(f'Downloading from {url} to {dest_folder}.')
+
     with tempfile.TemporaryDirectory() as tmpdirname:
         zip_file = f'{tmpdirname}/{dest_folder.stem}.zip'
 
