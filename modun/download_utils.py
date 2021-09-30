@@ -5,10 +5,13 @@ from pathlib import Path
 import wget
 
 
-def download_from_url(url: str, dest_path: Path) -> None:
+def download_from_url(url: str, dest_path: Path, verbose: bool = False) -> None:
     """Download item from url to dest_path."""
 
-    wget.download(out=dest_path, url=url)
+    if verbose:
+        print(f'Downloading from {url} to {dest_path}.')
+
+    wget.download(out=str(dest_path), url=url)
 
 
 def download_zip_from_url(url: str, dest_folder: Path, verbose: bool = False) -> None:
