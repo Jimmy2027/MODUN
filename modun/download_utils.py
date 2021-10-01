@@ -8,6 +8,10 @@ import wget
 def download_from_url(url: str, dest_path: Path, verbose: bool = False) -> None:
     """Download item from url to dest_path."""
 
+    assert (
+        dest_path.parent.exists()
+    ), 'Parent folder of destination path does not exist.'
+
     if verbose:
         print(f'Downloading from {url} to {dest_path}.')
 
