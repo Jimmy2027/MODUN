@@ -11,3 +11,12 @@ def _cycle(iterable):
     """
 
     yield from itertools.cycle(iterable)
+
+
+def chunks(lst, n):
+    """
+    Yield successive n-sized chunks from lst.
+    Taken from https://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks
+    """
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
