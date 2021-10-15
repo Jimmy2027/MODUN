@@ -15,7 +15,8 @@ def dict2json(out_path: Path, d: dict):
 
 def ensure_dir(dirname: Path) -> None:
     """
-    Create directory only if it does not exists yet.
+    Create directory only if it does not exist yet.
+    Throw an error otherwise.
     """
     dirname = Path(dirname)
     if not dirname.is_dir():
