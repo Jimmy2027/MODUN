@@ -29,18 +29,20 @@ def dict2pyobject(d: dict, name: str = 'mystruct') -> namedtuple:
     return MyStruct(**d)
 
 
-def write_to_jsonfile(config_path: Path, parameters: list):
+def write2json(json_fn: Path, parameters: list):
     """
+    Load jsonfile, write values to it and save it.
     parameters: list of tuples. Example [('model.use_cuda',VALUE),] where VALUE is the parameter to be set
     """
-    with open(config_path) as file:
-        config = json.load(file)
+    with open(json_fn) as file:
+        d = json.load(file)
+
     for parameter, value in parameters:
         split = parameter.split('.')
-        key = config[split[0]]
+        key = d[split[0]]
         for idx in range(1, len(split) - 1):
             key = key[split[idx]]
         key[split[-1]] = value
 
-    with open(config_path, 'w') as outfile:
-        json.dump(config, outfile, indent=4)
+    with open(json_fn, 'w') as outfile:
+        json.dump(d, outfile, indent=4)
