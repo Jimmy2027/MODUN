@@ -1,7 +1,7 @@
 import json
 from collections import namedtuple
-from pathlib import Path
 from collections.abc import MutableMapping
+from pathlib import Path
 
 
 def flatten_dict(d: MutableMapping, parent_key='', sep='__') -> dict:
@@ -38,11 +38,16 @@ def write2json(json_fn: Path, parameters: list):
         d = json.load(file)
 
     for parameter, value in parameters:
-        split = parameter.split('.')
-        key = d[split[0]]
-        for idx in range(1, len(split) - 1):
-            key = key[split[idx]]
-        key[split[-1]] = value
+        keys = parameter.split('.')
+
+        if len(keys) == 1:
+            d[keys[0]] = value
+        else:
+            split = parameter.split('.')
+            key = d[split[0]]
+            for idx in range(1, len(split) - 1):
+                key = key[split[idx]]
+            key[split[-1]] = value
 
     with open(json_fn, 'w') as outfile:
         json.dump(d, outfile, indent=4)
