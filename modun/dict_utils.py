@@ -29,6 +29,16 @@ def dict2pyobject(d: dict, name: str = 'mystruct') -> namedtuple:
     return MyStruct(**d)
 
 
+def dict2object(d: dict) -> namedtuple:
+    """Convert dict to an mutable object."""
+
+    class MyClass:
+        def __init__(self, **entries):
+            self.__dict__.update(entries)
+
+    return MyClass(**d)
+
+
 def write2json(json_fn: Path, parameters: list):
     """
     Load jsonfile, write values to it and save it.
