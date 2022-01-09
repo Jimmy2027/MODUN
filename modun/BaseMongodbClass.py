@@ -3,8 +3,9 @@ import io
 import pickle
 from abc import abstractmethod
 from pathlib import Path
+
+import numpy as np
 from bson.binary import Binary
-from modun.file_io import json2dict
 
 
 class BaseMongodbClass(object):
@@ -30,10 +31,19 @@ class BaseMongodbClass(object):
         with io.FileIO(str(filepath), 'r') as fileObject:
             fs.put(fileObject, filename=str(filepath.stem), _id=_id)
 
-    def add_array(self, npArray, filename: str, _id=None, fs=None):
+    def add_array(self, npArray, filename: str, _id=None, fs=None) -> None:
+        """
+        Add numpy array to gridfs
+        """
         if fs is None:
             fs = self.connect_with_gridfs()
         fs.put(Binary(pickle.dumps(npArray, protocol=2), subtype=128), filename=filename, _id=_id)
+
+    def get_array(self, _id=None, fs=None) -> np.array:
+        """
+        Get numpy array from gridfs
+        """
+        return pickle.loads(fs.get(_id).read())
 
     def connect_with_gridfs(self):
         pass
